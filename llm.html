@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haruharu RIM</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Haruharu RIM(知識の縁を共にまわるチャットLLM)、harutv.meの生成AIアシスタントです。">
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu-pc-l-mobile-c" id="menu-pc-l-mobile-c">
+            <div class="menu-line">
+                <div class="menu-line-icon">
+                    <button class="hmbtn" type="button">
+                        <i class="hmbtn__bars" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="menu-line">
+                <div class="menu-line-icon">
+                    <img src="tki1-260101222237.webp" alt="新しいチャットアイコン" width="29" height="26">
+                </div>
+                <div class="menu-line-text">
+                    新しいチャット
+                </div>
+            </div>
+            <div class="menu-line">
+                <div class="menu-line-icon">
+                    <img src="tki1-260101222202.webp" alt="音楽アイコン" width="24" height="24">
+                </div>
+                <div class="menu-line-text">
+                    音楽
+                </div>
+            </div>
+            <div class="chat-history-box">
+
+            </div>
+            <div class="setting-account">
+                <div class="menu-line" id="settings-button">
+                    <div class="menu-line-icon">
+                        <img alt="設定アイコン" width="24" height="24">
+                    </div>
+                    <div class="menu-line-text">
+                        設定
+                    </div>
+                </div>
+            </div>
+            <div class="popup1" id="popup1">
+                <div class="popup1-content" id="popup1-content">
+                    <span class="close" id="popup1-close">&times;</span>
+                    <h3>設定</h3>
+                    <ul>
+                        <li>表示デフォルト<select onchange="homepagellmmodechange()" id="hlmcs"><option value="nhome">Haruharu Homepage</option><option value="hllm">Haruharu AI</option></select></li>
+                    </ul>
+                    </div>
+
+            </div>
+        </div>
+        <div class="chat-pc-r-mobile-b">
+            <div class="title-box">
+                <select id="model-select" class="model-select">
+                    <option value="haruharu-rim-1">Haruharu RIM1</option>
+                </select>
+                <div class="title-box-text" id="chat-title">
+                    会話のタイトル
+                </div>
+            </div>
+            <div class="chat-area" id="chat-area">
+                <!-- チャットメッセージがここに表示されます -->
+            </div>
+            <div class="input-area">
+                <input id="user-input" class="user-input" autocapitalize="none" autocomplete="off" spellcheck="false"
+                    placeholder="RIMしてみよう！">
+                <button id="send-button" class="send-button">↑</button>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    body,
+    html {
+        overflow: hidden;
+        font-family: ヒラギノ角ゴ, Noto Sans JP, Arial, sans-serif;
+        background-color: rgb(194, 219, 219);
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        display: flex;
+        height: 100dvh;
+        width: 100vw;
+        flex-direction: row;
+    }
+
+    .send-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 50%;
+        /* 円形にする */
+        width: 40px;
+        /* 幅を固定 */
+        height: 40px;
+        /* 高さを固定 */
+        line-height: 20px;
+        /* テキストの垂直位置を調整 */
+    }
+
+    .user-input {
+        padding: 8px;
+        padding-left: 16px;
+        font: 16px Arial, sans-serif;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+        width: 100%;
+        background-color: transparent;
+    }
+
+    .model-select {
+        appearance: none;
+        padding: 6px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background-color: transparent;
+        color: white;
+    }
+
+
+
+    .input-area {
+        display: flex;
+        gap: 8px;
+    }
+
+    .title-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+
+    }
+
+    .chat-pc-r-mobile-b {
+        display: flex;
+        flex-direction: column;
+        height: 100dvh;
+        background-color: rgb(146, 164, 164);
+        position: relative;
+        width: calc(100vw - 70px);
+    }
+
+    .menu-pc-l-mobile-c {
+        background-color: rgb(158, 177, 177);
+        width: 70px;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 3%;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+    .menu-pc-l-mobile-c.menu-open {
+        width: 344px;
+        align-items: start;
+    }
+    .menu-line-text {
+        display: none;
+    }
+    .menu-pc-l-mobile-c.menu-open .menu-line-text {
+        display: flex;
+        align-items: start;
+        color: rgb(67, 75, 75);
+    }
+    .menu-line {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        gap: 10px;
+        cursor: pointer;
+        padding: 10px 15px;
+    }
+    .popup1 {
+        display: none;
+        position: absolute;
+        z-index: 1;
+        left: 5%;
+        width: 90%;
+        bottom: 80px;
+        padding:10px;
+        border: 2px solid rgb(95, 106, 106);
+        border-radius: 10px;
+      
+        overflow: auto;
+        background-color: rgb(129, 157, 169);
+    }
+    .menu-line-icon {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 4px;
+    }
+    .setting-account {
+        margin-top: auto;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    .input-area {
+        position: absolute;
+        bottom: 5%;
+        width: 90%;
+        left: 5%;
+        background-color: rgb(194, 219, 219);
+        padding: 10px;
+        border-radius: 30px;
+    }
+
+    .title-box-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: calc(100% - 140px);
+        /* セレクトボックスの幅を考慮して調整 */
+        text-align: center;
+    }
+
+    .hmbtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 23px;
+        padding-left: 0;
+        padding-right: 0;
+        border: none;
+        background-color: transparent;
+        color: inherit;
+        cursor: pointer;
+        transition: 0.3s ease
+    }
+
+    .hmbtn:focus {
+        outline: none
+    }
+
+
+    .hmbtn__bars {
+        display: block;
+        position: relative;
+        width: 24px;
+        height: 3px;
+        border-radius: 2px;
+        /*background-color: rgb(95, 106, 106);*/
+        background: #fff;
+        transition: 0.3s
+    }
+
+    .hmbtn__bars:before,
+    .hmbtn__bars:after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /*background-color: rgb(95, 106, 106);*/
+        background: #fff;
+        transition: 0.3s;
+        border-radius: 2px;
+    }
+
+    .hmbtn__bars:before {
+        transform: translate(0, -8px)
+    }
+
+    .hmbtn__bars:after {
+        transform: translate(0, 8px)
+    }
+
+    .menu-open .hmbtn .hmbtn__bars {
+        background-color: transparent
+    }
+
+    .menu-open .hmbtn .hmbtn__bars:before {
+        transform: rotate(45deg)
+    }
+
+    .menu-open .hmbtn .hmbtn__bars:after {
+        transform: rotate(-45deg)
+    }
+</style>
+<script src="llm.framework.js"></script>
+
+</html>

@@ -14,20 +14,45 @@
             font-style: normal;
         }
     </style>
-    <link rel="icon" href="sharu.ico" >
+    <link rel="icon" href="sharu.ico">
     <link rel="apple-touch-icon" href="sharu.jpg">
     <title>Haruharu Developper Site.(EN)</title>
-    <script>if (window.location.protocol == 'http:') { window.location.protocol = "https:"; }</script>
-    <script src="https://haruharutv.xsrv.jp/a-ip.php"></script>
 </head>
 
 <body>
+    <div
+        style="position:fixed;top:0px;left:0px;width:100%;height:50px;background:linear-gradient(180deg, rgba(173,233,255,0.578), rgba(172,222,222,0.578));box-shadow:0px 0px 15px -5px #777777;z-index:9999;display: flex;align-items: center;padding-left:30px;">
+        <select onchange="homepagellmmodechange()" id="hlmcs" style="padding:10px 20px;border-radius: 8px;border: none;outline: none;font-size: 14px;cursor: pointer;background:rgba(173, 233, 255, 0.578);color:#fff;">
+            <option value="nhome">Haruharu Homepage</option>
+            <option value="hllm">Haruharu AI</option>
+        </select>
+        <script>
+            function homepagellmmodechange() {
+                var hlmcs = document.getElementById("hlmcs").value;
+                if (hlmcs == "hllm") {
+                    localStorage.setItem("hlmmode", "on");
+                    window.location.href = "/llm.html";
+
+                } else {
+                    window.location.href = "/";
+                    localStorage.setItem("hlmmode", "off");
+                }
+
+            }
+            window.addEventListener("load", function() {
+                if (document.referrer.indexOf("ai.pre.haruharutv.jp") != -1 || localStorage.getItem("hlmmode") == "on") {
+                    location.href = "/llm.html";
+                } else {
+                }
+            });
+        </script>
+    </div>
     <div class="title-box">
         <p>
             <b>Haruharu</b>
-            Developper.
+            Developer.
             <br>
-            <span class="discript1">Haruharu's Developping site</span>
+            <span class="discript1">Haruharu's Developing site</span>
         </p>
         <div class="down-allow"></div>
     </div>
@@ -40,6 +65,7 @@
             -->
             No NEW Contents here.
         </div>
+        <h1>Links</h1>
         <div class="three-sprit">
 
             <a href="https://x.com/sharu2920"><img src="sharuicon.png">Haruharu's Official Twitter<br>(@sharu2920)</a>
@@ -52,7 +78,7 @@
         <div class="rb-1"></div>
         <a-box>
             <a-disc-l>
-                <p><b>We built NEW Site!</b><br>This site released on Aug 27 ,2024. </p>
+                <p><b>We built NEW Site!</b><br>This site released on Aug 27 ,2024. (Image is making)</p>
             </a-disc-l>
             <a-image-r>
                 <img src="dfm.png">
@@ -75,7 +101,7 @@
                     <span style="margin-left:65px">harukogaku1@yahoo.co.jp</span><br>
                     Form : Prepairing.<br>
                     <br>
-                    
+
                 </div>
                 <hr>
                 <p style="margin:20px;">Thanks for your Visiting!<br>This site is Translated to English <a
@@ -187,7 +213,7 @@
                         display: block;
                         color: #000;
                         margin: 6px;
-                        padding-bottom:11px;
+                        padding-bottom: 11px;
                     }
 
                     .news-box {
@@ -245,7 +271,7 @@
                         height: 250px;
                         width: 100%;
                         object-fit: cover;
-                        margin-bottom:5px;
+                        margin-bottom: 5px;
                     }
 
                     body,
@@ -338,7 +364,7 @@
                     .down-allow::before {
                         animation: anmd 2.5s infinite;
                     }
-        </style>
+                </style>
 </body>
 
 </html>
