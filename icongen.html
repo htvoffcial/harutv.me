@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High Quality Icon Processor</title>
+    <title>Pro Image Processor (Full Size)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .preview-area {
@@ -12,76 +12,82 @@
                 linear-gradient(-45deg, #eee 25%, transparent 25%),
                 linear-gradient(45deg, transparent 75%, #eee 75%),
                 linear-gradient(-45deg, transparent 75%, #eee 75%);
-            background-size: 10px 10px;
-            background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
+        input[type="range"] { accent-color: #4ade80; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-900 min-h-screen flex items-center justify-center p-4 font-sans text-slate-200">
-    <div class="max-w-2xl w-full bg-slate-800 rounded-3xl shadow-2xl p-8 border border-slate-700">
-        <header class="mb-8">
-            <h1 class="text-2xl font-bold text-white mb-1">HQ Icon Exporter</h1>
-            <p class="text-slate-400 text-sm">背景透過 & 滑らかな40pxリサイズ</p>
+    <div class="max-w-6xl w-full bg-slate-800 rounded-3xl shadow-2xl p-6 border border-slate-700">
+        <header class="mb-6 flex justify-between items-center border-b border-slate-700 pb-4">
+            <div>
+                <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                    HQ Background Remover <span class="text-[10px] bg-blue-500 text-white px-2 py-0.5 rounded-full uppercase">Full Size</span>
+                </h1>
+                <p class="text-slate-400 text-xs">元の解像度を維持して背景を透過します</p>
+            </div>
+            <div id="resolution-info" class="text-right text-xs font-mono text-slate-500">
+                Resolution: -- x --
+            </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Left: Controls -->
-            <div class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left: Controls (3 cols) -->
+            <div class="lg:col-span-3 space-y-4">
                 <div class="relative">
-                    <label class="group block w-full border-2 border-dashed border-slate-600 rounded-2xl p-6 text-center cursor-pointer hover:border-green-400 hover:bg-slate-700/50 transition-all">
+                    <label class="group block w-full border-2 border-dashed border-slate-600 rounded-xl p-4 text-center cursor-pointer hover:border-green-400 hover:bg-slate-700/50 transition-all">
                         <input type="file" id="upload" accept="image/*" class="hidden">
                         <div class="flex flex-col items-center">
-                            <svg class="w-8 h-8 mb-2 text-slate-400 group-hover:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                            <span class="text-sm font-medium" id="filename-display">画像をアップロード</span>
+                            <svg class="w-6 h-6 mb-1 text-slate-400 group-hover:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            <span class="text-xs font-medium" id="filename-display">画像を選択</span>
                         </div>
                     </label>
                 </div>
 
-                <div class="bg-slate-700/30 p-4 rounded-2xl space-y-4">
+                <div class="bg-slate-700/30 p-4 rounded-xl space-y-4">
                     <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-xs font-bold text-slate-400 uppercase">透過ターゲット色</label>
-                            <span id="colorHex" class="text-xs font-mono text-green-400">#8CD147</span>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">透過色</label>
+                            <span id="colorHex" class="text-[10px] font-mono text-green-400">#000000</span>
                         </div>
-                        <input type="color" id="targetColor" value="#8cd147" class="w-full h-10 rounded-lg border-none bg-transparent cursor-pointer">
+                        <input type="color" id="targetColor" value="#000000" class="w-full h-10 rounded-lg border-none bg-slate-900 cursor-pointer p-1">
                     </div>
 
                     <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-xs font-bold text-slate-400 uppercase">透過の強さ (Fuzziness)</label>
-                            <span id="fuzzDisplay" class="text-xs font-mono text-green-400">20</span>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">許容誤差</label>
+                            <span id="fuzzDisplay" class="text-[10px] font-mono text-green-400">20</span>
                         </div>
-                        <input type="range" id="threshold" min="0" max="150" value="20" class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-green-400">
+                        <input type="range" id="threshold" min="0" max="150" value="20" class="w-full h-1.5 bg-slate-600 rounded-lg appearance-none cursor-pointer">
                     </div>
                     
                     <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-xs font-bold text-slate-400 uppercase">エッジの滑らかさ (Smoothing)</label>
-                            <span id="smoothDisplay" class="text-xs font-mono text-green-400">10</span>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">スムージング</label>
+                            <span id="smoothDisplay" class="text-[10px] font-mono text-green-400">10</span>
                         </div>
-                        <input type="range" id="smoothing" min="1" max="50" value="10" class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-green-400">
+                        <input type="range" id="smoothing" min="1" max="100" value="10" class="w-full h-1.5 bg-slate-600 rounded-lg appearance-none cursor-pointer">
                     </div>
                 </div>
 
-                <button id="downloadBtn" disabled class="w-full bg-green-500 hover:bg-green-400 disabled:bg-slate-700 disabled:text-slate-500 text-slate-900 font-bold py-4 rounded-2xl transition-all shadow-lg shadow-green-500/20 active:scale-95 flex justify-center items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    WebP形式で書き出す
+                <button id="downloadBtn" disabled class="w-full bg-green-500 hover:bg-green-400 disabled:bg-slate-700 disabled:text-slate-500 text-slate-900 font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    等倍サイズで保存
                 </button>
             </div>
 
-            <!-- Right: Preview -->
-            <div class="flex flex-col space-y-4">
-                <div class="flex-1 flex flex-col">
-                    <span class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Original (Click to pick color)</span>
-                    <div class="flex-1 bg-slate-900 rounded-2xl border border-slate-700 flex items-center justify-center overflow-hidden min-h-[200px] relative">
-                        <canvas id="sourceCanvas" class="max-w-full max-h-full cursor-crosshair"></canvas>
-                    </div>
-                </div>
-                <div class="h-32 flex flex-col">
-                    <span class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Export Preview (40x40)</span>
-                    <div class="flex-1 bg-slate-900 rounded-2xl border border-slate-700 preview-area flex items-center justify-center">
-                        <!-- Show 40x40 scaled up for visibility -->
-                        <canvas id="resultCanvas" width="40" height="40" style="width: 80px; height: 80px; image-rendering: auto;"></canvas>
+            <!-- Right: Preview Area (9 cols) -->
+            <div class="lg:col-span-9 grid grid-cols-1 gap-4">
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Editor Preview (Click image to pick color)</span>
+                    <div class="relative bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden aspect-video flex items-center justify-center">
+                        <div class="absolute inset-0 overflow-auto custom-scrollbar p-4 flex items-center justify-center preview-area">
+                            <canvas id="mainCanvas" class="max-w-none shadow-2xl cursor-crosshair"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,16 +96,19 @@
 
     <script>
         const upload = document.getElementById('upload');
-        const sourceCanvas = document.getElementById('sourceCanvas');
-        const resultCanvas = document.getElementById('resultCanvas');
+        const mainCanvas = document.getElementById('mainCanvas');
         const targetColor = document.getElementById('targetColor');
         const colorHex = document.getElementById('colorHex');
         const thresholdInput = document.getElementById('threshold');
         const smoothingInput = document.getElementById('smoothing');
         const downloadBtn = document.getElementById('downloadBtn');
         const filenameDisplay = document.getElementById('filename-display');
+        const resInfo = document.getElementById('resolution-info');
 
         let originalImage = null;
+        // 描画用のオフスクリーンキャンバス（元データを保持）
+        const offscreenCanvas = document.createElement('canvas');
+        const offscreenCtx = offscreenCanvas.getContext('2d', { willReadFrequently: true });
 
         upload.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -111,7 +120,14 @@
                 const img = new Image();
                 img.onload = () => {
                     originalImage = img;
-                    drawSource();
+                    resInfo.textContent = `Resolution: ${img.width} x ${img.height}`;
+                    
+                    // 等倍サイズをセット
+                    offscreenCanvas.width = img.width;
+                    offscreenCanvas.height = img.height;
+                    mainCanvas.width = img.width;
+                    mainCanvas.height = img.height;
+                    
                     processImage();
                     downloadBtn.disabled = false;
                 };
@@ -120,31 +136,21 @@
             reader.readAsDataURL(file);
         });
 
-        function drawSource() {
-            const ctx = sourceCanvas.getContext('2d');
-            const maxDim = 400;
-            let w = originalImage.width;
-            let h = originalImage.height;
-            if (w > h) {
-                h = (h / w) * maxDim;
-                w = maxDim;
-            } else {
-                w = (w / h) * maxDim;
-                h = maxDim;
-            }
-            sourceCanvas.width = w;
-            sourceCanvas.height = h;
-            ctx.drawImage(originalImage, 0, 0, w, h);
-        }
-
-        sourceCanvas.addEventListener('mousedown', (e) => {
+        // カラーピッカー機能
+        mainCanvas.addEventListener('mousedown', (e) => {
             if (!originalImage) return;
-            const rect = sourceCanvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (sourceCanvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (sourceCanvas.height / rect.height);
-            const ctx = sourceCanvas.getContext('2d');
-            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const rect = mainCanvas.getBoundingClientRect();
+            // キャンバス内の実際のピクセル座標を計算
+            const scaleX = mainCanvas.width / rect.width;
+            const scaleY = mainCanvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            
+            // 透過処理前のオリジナルから色を取得するためにoffscreenを使用
+            offscreenCtx.drawImage(originalImage, 0, 0);
+            const pixel = offscreenCtx.getImageData(x, y, 1, 1).data;
             const hex = "#" + ("000000" + ((pixel[0] << 16) | (pixel[1] << 8) | pixel[2]).toString(16)).slice(-6);
+            
             targetColor.value = hex;
             colorHex.textContent = hex.toUpperCase();
             processImage();
@@ -162,46 +168,45 @@
         function processImage() {
             if (!originalImage) return;
 
-            // 1. Create a large temporary canvas to do the chroma keying at high res
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = originalImage.width;
-            tempCanvas.height = originalImage.height;
-            tempCtx.drawImage(originalImage, 0, 0);
+            const w = originalImage.width;
+            const h = originalImage.height;
 
-            const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+            // オリジナル画像をオフスクリーンに描画
+            offscreenCtx.clearRect(0, 0, w, h);
+            offscreenCtx.drawImage(originalImage, 0, 0);
+
+            const imageData = offscreenCtx.getImageData(0, 0, w, h);
             const data = imageData.data;
-            
             const target = hexToRgb(targetColor.value);
             const fuzz = parseFloat(thresholdInput.value);
             const edgeSmooth = parseFloat(smoothingInput.value);
 
+            // 高速なループ処理
             for (let i = 0; i < data.length; i += 4) {
                 const r = data[i], g = data[i+1], b = data[i+2];
                 
-                // Color distance
+                // ユークリッド距離で色の近さを判定
                 const dist = Math.sqrt(
-                    Math.pow(r - target.r, 2) +
-                    Math.pow(g - target.g, 2) +
-                    Math.pow(b - target.b, 2)
+                    (r - target.r) ** 2 +
+                    (g - target.g) ** 2 +
+                    (b - target.b) ** 2
                 );
 
                 if (dist < fuzz) {
-                    data[i+3] = 0;
+                    data[i+3] = 0; // 完全に透過
                 } else if (dist < fuzz + edgeSmooth) {
-                    // Soft alpha transition
+                    // 境界線を滑らかに減衰
                     const alpha = ((dist - fuzz) / edgeSmooth) * 255;
-                    data[i+3] = Math.min(data[i+3], alpha);
+                    if (alpha < data[i+3]) {
+                        data[i+3] = alpha;
+                    }
                 }
             }
-            tempCtx.putImageData(imageData, 0, 0);
 
-            // 2. Scale down to 40x40 onto the result canvas
-            const resCtx = resultCanvas.getContext('2d');
-            resCtx.clearRect(0, 0, 40, 40);
-            resCtx.imageSmoothingEnabled = true;
-            resCtx.imageSmoothingQuality = 'high';
-            resCtx.drawImage(tempCanvas, 0, 0, 40, 40);
+            // 結果をメイン表示用キャンバスに反映
+            const mainCtx = mainCanvas.getContext('2d');
+            mainCtx.clearRect(0, 0, w, h);
+            mainCtx.putImageData(imageData, 0, 0);
         }
 
         function hexToRgb(hex) {
@@ -210,24 +215,23 @@
                 r: parseInt(result[1], 16),
                 g: parseInt(result[2], 16),
                 b: parseInt(result[3], 16)
-            } : null;
+            } : {r:0, g:0, b:0};
         }
 
         downloadBtn.addEventListener('click', () => {
             const now = new Date();
-            const timestamp = now.getFullYear().toString().slice(-2) +
+            const ts = now.getFullYear().toString().slice(-2) +
                 (now.getMonth() + 1).toString().padStart(2, '0') +
                 now.getDate().toString().padStart(2, '0') +
+                "_" +
                 now.getHours().toString().padStart(2, '0') +
-                now.getMinutes().toString().padStart(2, '0') +
-                now.getSeconds().toString().padStart(2, '0');
+                now.getMinutes().toString().padStart(2, '0');
             
             const link = document.createElement('a');
-            link.download = `tki1-${timestamp}.webp`;
-            link.href = resultCanvas.toDataURL('image/webp', 0.95);
+            link.download = `transparent_${ts}.png`; // 等倍の場合は汎用的なPNG
+            link.href = mainCanvas.toDataURL('image/png');
             link.click();
         });
     </script>
 </body>
 </html>
-

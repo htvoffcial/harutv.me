@@ -21,7 +21,8 @@
             </div>
             <div class="menu-line">
                 <div class="menu-line-icon">
-                    <img src="tki1-260101222237.webp" alt="新しいチャットアイコン" width="29" height="26">
+                    <img src="transparent_260102_1023.svg" alt="新しいチャットアイコン" width="29" height="26"
+                        style="margin-left:-1px;">
                 </div>
                 <div class="menu-line-text">
                     新しいチャット
@@ -29,14 +30,22 @@
             </div>
             <div class="menu-line">
                 <div class="menu-line-icon">
-                    <img src="tki1-260101222202.webp" alt="音楽アイコン" width="24" height="24">
+                    <img src="transparent_260102_1056.svg" alt="音楽アイコン" width="23" height="24"
+                        style="margin-left:0.5px;">
                 </div>
                 <div class="menu-line-text">
                     音楽
                 </div>
             </div>
             <div class="chat-history-box">
-
+                <div class="historybox-inner">
+                    <div class="chat-history-title">
+                        チャット
+                    </div>
+                    <div class="chat-history-list" id="chat-history-list">
+                        <!-- チャット履歴がここに表示されます -->
+                    </div>
+                </div>
             </div>
             <div class="setting-account">
                 <div class="menu-line" id="settings-button">
@@ -53,9 +62,12 @@
                     <span class="close" id="popup1-close">&times;</span>
                     <h3>設定</h3>
                     <ul>
-                        <li>表示デフォルト<select onchange="homepagellmmodechange()" id="hlmcs"><option value="nhome">Haruharu Homepage</option><option value="hllm">Haruharu AI</option></select></li>
+                        <li>表示デフォルト<select onchange="homepagellmmodechange()" id="hlmcs">
+                                <option value="nhome">Haruharu Homepage</option>
+                                <option value="hllm">Haruharu AI</option>
+                            </select></li>
                     </ul>
-                    </div>
+                </div>
 
             </div>
         </div>
@@ -107,13 +119,10 @@
         font-size: 20px;
         cursor: pointer;
         border-radius: 50%;
-        /* 円形にする */
         width: 40px;
-        /* 幅を固定 */
         height: 40px;
-        /* 高さを固定 */
         line-height: 20px;
-        /* テキストの垂直位置を調整 */
+        flex-shrink: 0;
     }
 
     .user-input {
@@ -136,6 +145,7 @@
         font-size: 14px;
         background-color: transparent;
         color: white;
+        margin-left: 5%;
     }
 
 
@@ -148,10 +158,20 @@
     .title-box {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-
+        padding-top: 5%;
+        position: relative;
     }
+
+    .title-box-text {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+    }
+
 
     .chat-pc-r-mobile-b {
         display: flex;
@@ -173,18 +193,53 @@
         transition: width 0.3s ease;
         position: relative;
     }
+
     .menu-pc-l-mobile-c.menu-open {
         width: 344px;
         align-items: start;
     }
+
+    .chat-history-box {
+        flex-grow: 1;
+        width: 100%;
+        padding: 10px 15px;
+    }
+
+    .chat-history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .chat-history-title {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: rgb(67, 75, 75);
+    }
+
+    .historybox-inner {}
+
     .menu-line-text {
         display: none;
     }
+
+    .chat-history-box {
+        display: none;
+    }
+
+    .menu-pc-l-mobile-c.menu-open .chat-history-box {
+        display: block;
+    }
+
     .menu-pc-l-mobile-c.menu-open .menu-line-text {
         display: flex;
         align-items: start;
         color: rgb(67, 75, 75);
     }
+
     .menu-line {
         display: flex;
         flex-direction: row;
@@ -193,6 +248,7 @@
         cursor: pointer;
         padding: 10px 15px;
     }
+
     .popup1 {
         display: none;
         position: absolute;
@@ -200,23 +256,26 @@
         left: 5%;
         width: 90%;
         bottom: 80px;
-        padding:10px;
+        padding: 10px;
         border: 2px solid rgb(95, 106, 106);
         border-radius: 10px;
-      
+
         overflow: auto;
         background-color: rgb(129, 157, 169);
     }
+
     .menu-line-icon {
         width: 24px;
         height: 24px;
         margin-bottom: 4px;
     }
+
     .setting-account {
         margin-top: auto;
         margin-bottom: 20px;
         width: 100%;
     }
+
     .input-area {
         position: absolute;
         bottom: 5%;
@@ -298,6 +357,70 @@
 
     .menu-open .hmbtn .hmbtn__bars:after {
         transform: rotate(-45deg)
+    }
+
+    @media (max-width: 680px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .menu-pc-l-mobile-c {
+            width: 80px;
+            height: 75px;
+            overflow: hidden;
+            background: transparent;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 10;
+
+        }
+
+        .menu-pc-l-mobile-c.menu-open {
+            width: 100%;
+            height: 100vh;
+            background-color: rgb(158, 177, 177);
+        }
+
+        .menu-pc-l-mobile-c .menu-line:nth-child(n+2),
+        .setting-account,
+        .chat-history-box {
+            display: none;
+        }
+
+        .menu-pc-l-mobile-c.menu-open .menu-line:nth-child(n+2),
+        .menu-pc-l-mobile-c.menu-open .setting-account,
+        .menu-pc-l-mobile-c.menu-open .chat-history-box {
+            display: flex;
+        }
+
+        .chat-pc-r-mobile-b {
+            width: 100vw;
+            height: 100dvh;
+        }
+
+        .title-box-text {
+            width: calc(100% - 100px);
+        }
+
+        .model-select {
+            display: none;
+        }
+
+        .hmbtn__bars,
+        .hmbtn__bars:before,
+        .hmbtn__bars:after {
+            height: 2px;
+            width: 20px;
+        }
+
+        .hmbtn__bars:after {
+            transform: translate(0, 6px);
+        }
+
+        .hmbtn__bars:before {
+            transform: translate(0, -6px);
+        }
     }
 </style>
 <script src="llm.framework.js"></script>
